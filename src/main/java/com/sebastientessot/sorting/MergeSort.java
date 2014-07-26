@@ -1,64 +1,81 @@
 package main.java.com.sebastientessot.sorting;
 
-
 public class MergeSort implements SortingAlgorithm {
 
-	private void mergeSort(int[] array, int low, int high) {
-		if(low < high) {
+	private void mergeSort(int[] array, int low, int high, boolean asc) {
+		if (low < high) {
 			int splitIndex = (low + high) / 2;
-			mergeSort(array, low, splitIndex);
-			mergeSort(array, splitIndex+1, high);
-			merge(array, low, splitIndex, high);
+			mergeSort(array, low, splitIndex, asc);
+			mergeSort(array, splitIndex + 1, high, asc);
+			merge(array, low, splitIndex, high, asc);
 		}
 	}
-	
-	private void merge(int[] array, int low, int splitIndex, int high) {
+
+	private void merge(int[] array, int low, int splitIndex, int high,
+			boolean asc) {
 		int leftSize = splitIndex - low + 1;
 		int rightSize = high - splitIndex;
 		int[] leftArray = new int[leftSize + 1];
 		int[] rightArray = new int[rightSize + 1];
-		
-		leftArray[leftSize] = Integer.MAX_VALUE;
-		rightArray[rightSize] = Integer.MAX_VALUE;
-		
-		// Copy Arrays
-		for(int i = 0; i<leftSize; i++) {
-			leftArray[i] = array[low+i];
-		} 
-		for(int i = 0; i<rightSize; i++) {
-			rightArray[i] = array[splitIndex+i];
+
+		if(asc) {
+			leftArray[leftSize] = Integer.MAX_VALUE;
+			rightArray[rightSize] = Integer.MAX_VALUE;
+		} else {
+			leftArray[leftSize] = Integer.MIN_VALUE;
+			rightArray[rightSize] = Integer.MIN_VALUE;
 		}
 		
+		// Copy Arrays
+		for (int i = 0; i < leftSize; i++) {
+			leftArray[i] = array[low + i];
+		}
+		for (int i = 0; i < rightSize; i++) {
+			rightArray[i] = array[splitIndex + 1 + i];
+		}
+
 		// Merge
 		int leftIndex = 0;
 		int rightIndex = 0;
-		for(int i = low; i<=high; i++) {
-			if(leftArray[leftIndex] <= rightArray[rightIndex]) {
-				array[i] = leftArray[leftIndex];
-				leftIndex++;
-			} else {
-				array[i] = rightArray[rightIndex];
-				rightIndex++;
+		if (asc) {
+			for (int i = low; i <= high; i++) {
+				if (leftArray[leftIndex] <= rightArray[rightIndex]) {
+					array[i] = leftArray[leftIndex];
+					leftIndex++;
+				} else {
+					array[i] = rightArray[rightIndex];
+					rightIndex++;
+				}
+			}
+		} else {
+			for (int i = low; i <= high; i++) {
+				if (leftArray[leftIndex] >= rightArray[rightIndex]) {
+					array[i] = leftArray[leftIndex];
+					leftIndex++;
+				} else {
+					array[i] = rightArray[rightIndex];
+					rightIndex++;
+				}
 			}
 		}
 	}
 
 	@Override
 	public void sort(int[] input) {
-		if(input == null || input.length <= 1) {
+		if (input == null || input.length <= 1) {
 			return;
 		}
-		
-		mergeSort(input, 0, input.length - 1);
+
+		mergeSort(input, 0, input.length - 1, true);
 	}
 
 	@Override
 	public void sortDecreasing(int[] input) {
-		if(input == null || input.length <= 1) {
+		if (input == null || input.length <= 1) {
 			return;
 		}
-		
-		// TODO to implement
+
+		mergeSort(input, 0, input.length - 1, false);
 	}
 
 }
