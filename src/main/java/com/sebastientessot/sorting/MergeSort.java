@@ -15,17 +15,9 @@ public class MergeSort implements SortingAlgorithm {
 			boolean asc) {
 		int leftSize = splitIndex - low + 1;
 		int rightSize = high - splitIndex;
-		int[] leftArray = new int[leftSize + 1];
-		int[] rightArray = new int[rightSize + 1];
+		int[] leftArray = new int[leftSize];
+		int[] rightArray = new int[rightSize];
 
-		if(asc) {
-			leftArray[leftSize] = Integer.MAX_VALUE;
-			rightArray[rightSize] = Integer.MAX_VALUE;
-		} else {
-			leftArray[leftSize] = Integer.MIN_VALUE;
-			rightArray[rightSize] = Integer.MIN_VALUE;
-		}
-		
 		// Copy Arrays
 		for (int i = 0; i < leftSize; i++) {
 			leftArray[i] = array[low + i];
@@ -39,7 +31,8 @@ public class MergeSort implements SortingAlgorithm {
 		int rightIndex = 0;
 		if (asc) {
 			for (int i = low; i <= high; i++) {
-				if (leftArray[leftIndex] <= rightArray[rightIndex]) {
+				if (leftIndex != leftSize
+						&& (rightIndex == rightSize || leftArray[leftIndex] <= rightArray[rightIndex])) {
 					array[i] = leftArray[leftIndex];
 					leftIndex++;
 				} else {
@@ -49,7 +42,8 @@ public class MergeSort implements SortingAlgorithm {
 			}
 		} else {
 			for (int i = low; i <= high; i++) {
-				if (leftArray[leftIndex] >= rightArray[rightIndex]) {
+				if (leftIndex != leftSize
+						&& (rightIndex == rightSize || leftArray[leftIndex] >= rightArray[rightIndex])) {
 					array[i] = leftArray[leftIndex];
 					leftIndex++;
 				} else {

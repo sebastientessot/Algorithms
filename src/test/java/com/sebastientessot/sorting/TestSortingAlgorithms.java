@@ -14,7 +14,7 @@ import org.junit.Test;
 
 public class TestSortingAlgorithms {
 
-	private static final int arraySize = 10;
+	private static final int arraySize = 11;
 	
 	private int[] createArray() {
 		int[] array = new int[arraySize];
